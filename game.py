@@ -21,7 +21,8 @@ def apply_gravity():
     """
     # TODO : Mettez à jour la vitesse verticale puis la position verticale
     # du Doodle à partir de GRAVITY.
-
+    # doodle_dict["vel_y"]+= GRAVITY
+    # doodle_dict["y"]+= doodle_dict["vel_y"]
     return
 
 # ===========================================================
@@ -37,13 +38,25 @@ def move_doodle():
 
     # TODO : Gérez les déplacements gauche/droite et mettez à jour
     # simultanément la direction et l'image du Doodle.
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        doodle_dict["direction"]= "left"
+        doodle_dict["image"]= doodle_left_img
+        doodle_dict["x"]-=DOODLE_SPEED
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        doodle_dict["x"]+=DOODLE_SPEED
+        doodle_dict["direction"]= "right"
+        doodle_dict["image"]= doodle_right_img
 
+    ## TODO TODO ## (peut-être): régler le cas quand on pèse sur les deux pitons en même temps.
 
 
     # TODO : Implémentez le Screen Wrap pour qu'une partie du Doodle puisse
     # sortir d'un côté avant de réapparaître de l'autre.
     # N'utilisez pas de dimensions numériques écrites directement.
-
+    if  doodle_dict["x"] > SCREEN_WIDTH:
+        doodle_dict["x"]= 0 - DOODLE_WIDTH
+    if  doodle_dict["x"] + DOODLE_WIDTH < 0:
+        doodle_dict["x"]= SCREEN_WIDTH
 
 
     return
@@ -53,10 +66,20 @@ def move_doodle():
 
 # ======================== PARTIE 2.3 ========================
 def move_platforms():
+    #TODO TODO faire en sorte que les plateformes bleues ait le choix de commencer à gauche ou à droite (aléatoire)
     """
     Déplace horizontalement les plateformes mobiles ("blue").
     Fait rebondir les plateformes lorsqu'elles atteignent les bords de la fenêtre.
     """
+    for platform in PLATFORMS:
+        if platform["type"]!= "blue":
+            continue
+        else: #déplacement de la platforme si bleu
+            #platform["vx"]*=random.choice((1,-1))  # doit faire en sorte que les plateformes peuvent commencer dans une direction ou dans l'autre
+            if platform["x"]>= (SCREEN_WIDTH-PLATFORM_WIDTH) or platform["x"]<=0:
+                platform["vx"]*=-1
+            platform["x"]+= platform["vx"]
+             
     # TODO : Parcourez les plateformes et gérez le déplacement des plateformes
     # bleues encore actives. Elles doivent rester dans la fenêtre en inversant
     # leur vitesse lorsqu'elles atteignent un bord.

@@ -1,5 +1,4 @@
 # ======================== main.py ========================
-
 import pygame
 import sys
 from config import FPS, doodle_dict
@@ -17,6 +16,7 @@ running = True
 
 # Génération initiale des plateformes avant de lancer la boucle
 generate_initial_platforms()
+
 
 # ======================== BOUCLE PRINCIPALE ========================
 while running:
